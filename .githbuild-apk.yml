@@ -1,0 +1,32 @@
+name: TR CHAT APK Oluştur
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Projeyi indir
+        uses: actions/checkout@v4
+
+      - name: Flutter kur
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Paketleri yükle
+        run: flutter pub get
+
+      - name: APK oluştur
+        run: flutter build apk --release
+
+      - name: APK dosyasını kaydet
+        uses: actions/upload-artifact@v4
+        with:
+          name: TR-CHAT-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
